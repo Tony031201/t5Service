@@ -2,7 +2,14 @@ FROM python:3.10.10-slim
 
 WORKDIR /app
 
-COPY . /app
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    libpq-dev \
+    && apt-get clean \
+
+COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
