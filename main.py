@@ -25,6 +25,7 @@ def home():
 def pred(request: QuestionRequest):
     try:
         question = request.question
+        print(f"Received question: {question}")
         # 输入与生成
         input_text = f"question: {question} context: {t5_context}"
         inputs = tokenizer(
