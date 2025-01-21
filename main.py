@@ -3,6 +3,7 @@ from t5base_context import context as t5_context
 import sys
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import uvicorn
 
 class QuestionRequest(BaseModel):
     question: str
@@ -15,6 +16,10 @@ app = FastAPI()
 model_name = "t5-base"
 tokenizer = T5Tokenizer.from_pretrained(model_name, legacy=False)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
+
+@app.get('/')
+def home():
+    return "Hello from your Railway-deployed Python service!"
 
 @app.post("/predict/")
 def pred(request: QuestionRequest):
@@ -41,3 +46,5 @@ def pred(request: QuestionRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+if __name__ == '__main__':
+    uvicorn.run(app,host='0.0.0.0', port=5000)
