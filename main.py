@@ -24,6 +24,7 @@ def home():
 @app.post("/predict/")
 def pred(request: QuestionRequest):
     try:
+        print('enter predict function')
         question = request.question
         print(f"Received question: {question}")
         # 输入与生成
