@@ -13,7 +13,7 @@ app = FastAPI()
 
 # question = 'How much time I need to wait for the soup when I try to heat them?'
 
-model_name = "t5-base"
+model_name = "t5-small"
 tokenizer = T5Tokenizer.from_pretrained(model_name, legacy=False)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
 
@@ -38,12 +38,13 @@ def pred(request: QuestionRequest):
         )
         outputs = model.generate(
             inputs["input_ids"],
-            max_length=500,
+            max_length=200,
             min_length=50,
             num_beams=5,
             repetition_penalty=1.2
         )
         generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        print("answer: ", generated_text)
         return {"answer": generated_text}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
